@@ -62,12 +62,27 @@ const checkWinner = () => {
   if (arr[0][2] == "0" && arr[1][1] == "0" && arr[2][0] == "0") {
     return "0";
   }
-  return false;
+  return "false";
+};
+
+const restart = () => {
+  let rows = document.querySelectorAll("tr");
+  rows.forEach((row, i) => {
+    let cells = row.querySelectorAll("td");
+    cells.forEach((cell, j) => {
+      cell.innerHTML = "";
+      arr[i][j] = "";
+    });
+  });
+  turn = 1;
+  char = "X";
+  document.querySelector("span").innerHTML = char;
 };
 
 const winner = (text) => {
   setTimeout(() => {
     alert(text);
+    restart();
   }, 50);
 };
 
@@ -82,17 +97,16 @@ document.querySelector("table").onclick = (event) => {
     } else if (checkWinner() === "0") {
       winner("0 Won!!!");
     }
-
+    if (checkWinner() == "false" && turn == 10) {
+      winner("dead head");
+      restart();
+    }
     if (cell.innerHTML) {
       event.preventDefault();
     } else {
-      if (checkWinner() == false && turn == 10) {
-        winner("dead head");
-      }
       cell.innerHTML = char;
       turn += 1;
       changeTurn();
     }
   }
-  console.log(arr);
 };
